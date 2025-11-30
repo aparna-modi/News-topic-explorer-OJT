@@ -27,12 +27,17 @@ class HomeScreen extends ConsumerWidget {
                 //when we press the button
                 Navigator.pushNamed(context, '/search');
               },
-            )
+            ),
+            IconButton(onPressed: (){
+
+            },
+                icon: const Icon(Icons.audiotrack))
           ],
         ),
+        elevation: 6,
       ),
-      body: Center(
-        child: Column(
+      body: ListView(
+        children: [Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text('This is the Home Screen.'),
@@ -43,8 +48,13 @@ class HomeScreen extends ConsumerWidget {
               },
               child: const Text('Go to Article Screen'),
             ),
+            Row(
+              children: [
+                IconButton(onPressed: (){}, icon: const Icon(Icons.person_off))
+              ],
+            )
           ],
-        ),
+        ),]
       ),
     );
   }
