@@ -1,5 +1,10 @@
 class ArticleModel {
+
+  //declaring attributes
+  //required keyword for fetching data from API
+  //to access data regarding these keyword fields for each article.
   final String title;
+  //null safety
   final String? description;
   final String? urlToImage;
   final String? author;
