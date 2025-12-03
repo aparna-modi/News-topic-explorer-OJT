@@ -7,7 +7,6 @@ import 'package:tes_ojt_project/features/home/presentation/screens/search_screen
 void main() {
   runApp(const ProviderScope(child: MyAppu()));
 }
-
 class MyAppu extends StatelessWidget {
   const MyAppu({super.key});
 

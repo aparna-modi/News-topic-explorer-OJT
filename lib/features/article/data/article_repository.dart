@@ -1,10 +1,13 @@
+// importing dio for api calls
 import 'package:dio/dio.dart';
+//importing article model
 import 'article_model.dart';
 
 class ArticleRepository {
   final String _apiKey = '731a3b7d3a3c4d3a89059f2c1a966043';
 
   // using Dio for easier API calls
+  //_ makes a variable private
   final Dio _dio = Dio();
 
   /// Method 1: Getting Top Headlines (For Home Screen)
@@ -18,6 +21,7 @@ class ArticleRepository {
         queryParameters: {
           'country': 'us',       // Fetching US news
           'category': category,  // e.g. 'technology'
+          'sortBy': 'publishedAt',
           'apiKey': _apiKey,
         },
       );
