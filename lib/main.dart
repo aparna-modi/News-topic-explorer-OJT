@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tes_ojt_project/features/article/data/article_model.dart';
 import 'package:tes_ojt_project/features/article/presentation/screens/article_screen.dart';
+import 'package:tes_ojt_project/features/article/presentation/screens/bookmarked_articles_screen.dart';
 import 'package:tes_ojt_project/features/home/presentation/screens/home_screen.dart';
 import 'package:tes_ojt_project/features/home/presentation/screens/search_screen.dart';
 
@@ -14,8 +16,6 @@ class MyAppu extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-
-      //stops showing the debug red color banner
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
@@ -25,8 +25,18 @@ class MyAppu extends StatelessWidget {
       routes: {
         '/': (context) => const HomeScreen(),
         '/search': (context) => const SearchScreen(),
-        '/article': (context) => const ArticleScreen(),
-        // '/search': (context) => const SearchScreen(),
+        '/bookmarked': (context) => const BookmarkedArticlesScreen(),
+      },
+      onGenerateRoute: (settings) {
+        if (settings.name == '/article') {
+          final args = settings.arguments as ArticleModel;
+          return MaterialPageRoute(
+            builder: (context) {
+              return ArticleScreen(article: args);
+            },
+          );
+        }
+        return null;
       },
     );
   }
