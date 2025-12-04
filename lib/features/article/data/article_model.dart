@@ -6,6 +6,7 @@ class ArticleModel {
   final String title;
   //null safety
   final String? description;
+  final String? url;
   final String? urlToImage;
   final String? author;
   final String? publishedAt;
@@ -14,6 +15,7 @@ class ArticleModel {
   ArticleModel({
     required this.title,
     this.description,
+    this.url,
     this.urlToImage,
     this.author,
     this.publishedAt,
@@ -27,6 +29,8 @@ class ArticleModel {
       title: json['title'] ?? "No Title Available",
 
       description: json['description'],
+
+      url: json['url'],
 
       // NewsAPI sometimes sends broken image URLs, so we keep it nullable
       urlToImage: json['urlToImage'],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tes_ojt_project/features/article/data/article_model.dart';
 import 'package:tes_ojt_project/features/article/presentation/providers/bookmarked_articles_provider.dart';
+import 'package:tes_ojt_project/features/article_web_view/presentation/article_web_view_screen.dart';
 
 class ArticleScreen extends ConsumerWidget {
   final ArticleModel article;
@@ -66,6 +67,21 @@ class ArticleScreen extends ConsumerWidget {
               article.content ?? article.description ?? 'No content available.',
               style: const TextStyle(fontSize: 16.0),
             ),
+            const SizedBox(height: 16.0),
+            if (article.url != null)
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ArticleWebViewScreen(url: article.url!),
+                      ),
+                    );
+                  },
+                  child: const Text('Show Full Story'),
+                ),
+              ),
           ],
         ),
       ),

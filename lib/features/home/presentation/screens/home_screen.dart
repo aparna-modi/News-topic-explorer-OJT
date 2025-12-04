@@ -40,22 +40,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          children: [
-            IconButton(
-              icon: const Icon(Icons.search),
-              onPressed: () {
-                Navigator.pushNamed(context, '/search');
-              },
-            ),
-            IconButton(
-              icon: const Icon(Icons.bookmark),
-              onPressed: () {
-                Navigator.pushNamed(context, '/bookmarked');
-              },
-            ),
-          ],
-        ),
+        title: const Text('News'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () {
+              Navigator.pushNamed(context, '/search');
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.bookmark),
+            onPressed: () {
+              Navigator.pushNamed(context, '/bookmarked');
+            },
+          ),
+        ],
         elevation: 6,
         bottom: TabBar(
           controller: _tabController,
