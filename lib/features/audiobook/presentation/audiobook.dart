@@ -11,18 +11,22 @@ import 'package:tes_ojt_project/features/article/data/article_repository.dart';
 // Importing the provider for bookmarked articles.
 import 'package:tes_ojt_project/features/article/presentation/providers/bookmarked_articles_provider.dart';
 
-// Defining the SearchScreen as a ConsumerStatefulWidget to interact with Riverpod providers.
-class SearchScreen extends ConsumerStatefulWidget {
-  // Constructor for SearchScreen widget.
-  const SearchScreen({super.key});
+// To use this screen, you need to add the flutter_tts package to your pubspec.yaml:
+// dependencies:
+//   flutter_tts: ^3.8.3
 
-  // Creating the state for the SearchScreen.
+// Defining the AudiobookScreen as a ConsumerStatefulWidget to interact with Riverpod providers.
+class AudiobookScreen extends ConsumerStatefulWidget {
+  // Constructor for AudiobookScreen widget.
+  const AudiobookScreen({super.key});
+
+  // Creating the state for the AudiobookScreen.
   @override
-  ConsumerState<SearchScreen> createState() => _SearchScreenState();
+  ConsumerState<AudiobookScreen> createState() => _AudiobookScreenState();
 }
 
-// State class for SearchScreen.
-class _SearchScreenState extends ConsumerState<SearchScreen> {
+// State class for AudiobookScreen.
+class _AudiobookScreenState extends ConsumerState<AudiobookScreen> {
   // A global key to uniquely identify the Form widget and allow validation.
   final _formKey = GlobalKey<FormState>();
   // A controller for the search text field.
@@ -32,7 +36,8 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   // A boolean to track the loading state.
   bool _isLoading = false;
   // A string to display the status of the search.
-  String _statusMessage = "Type a topic to search news";
+  String _statusMessage = "Type a topic to search news to listen to";
+
   // Text-to-speech instance.
   final FlutterTts _flutterTts = FlutterTts();
   ArticleModel? _currentlyPlaying;
@@ -108,13 +113,13 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     super.dispose();
   }
 
-  // Building the UI for the SearchScreen.
+  // Building the UI for the AudiobookScreen.
   @override
   Widget build(BuildContext context) {
     // Returning a Scaffold, which provides a basic layout structure.
     return Scaffold(
       // Defining the AppBar at the top of the screen.
-      appBar: AppBar(title: const Text("Search News")),
+      appBar: AppBar(title: const Text("News Audiobook")),
       // Defining the body of the Scaffold.
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -172,56 +177,51 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                   // Checking if the article is bookmarked.
                   final isBookmarked = ref.watch(bookmarkedArticlesProvider).any((b) => b.title == article.title);
                   final isPlaying = _currentlyPlaying == article;
-                  // Making the list item tappable to navigate to the article details.
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/article', arguments: article);
-                    },
-                    // Displaying each article in a Card widget.
-                    child: Card(
-                      margin: const EdgeInsets.only(bottom: 12),
-                      elevation: 2,
-                      child: ListTile(
-                        contentPadding: const EdgeInsets.all(10),
-                        // Displaying the article image if available.
-                        leading: article.urlToImage != null
-                            ? Image.network(
-                          article.urlToImage!,
-                          width: 80,
-                          fit: BoxFit.cover,
-                          errorBuilder: (c, o, s) => const Icon(Icons.broken_image, size: 50),
-                        )
-                            : const Icon(Icons.article, size: 50),
-                        // Displaying the article title.
-                        title: Text(article.title, maxLines: 2, overflow: TextOverflow.ellipsis),
-                        // Displaying the publication date.
-                        subtitle: Text(article.publishedAt ?? "", style: const TextStyle(fontSize: 12)),
-                        // Adding a bookmark button to each article.
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            IconButton(
-                              icon: Icon(isPlaying ? Icons.stop_circle_outlined : Icons.play_circle_outline),
-                              color: Theme.of(context).primaryColor,
-                              onPressed: () => _togglePlay(article),
+                  
+                  // Displaying each article in a Card widget.
+                  return Card(
+                    margin: const EdgeInsets.only(bottom: 12),
+                    elevation: 2,
+                    child: ListTile(
+                      contentPadding: const EdgeInsets.all(10),
+                      // Displaying the article image if available.
+                      leading: article.urlToImage != null
+                          ? Image.network(
+                        article.urlToImage!,
+                        width: 80,
+                        fit: BoxFit.cover,
+                        errorBuilder: (c, o, s) => const Icon(Icons.broken_image, size: 50),
+                      )
+                          : const Icon(Icons.article, size: 50),
+                      // Displaying the article title.
+                      title: Text(article.title, maxLines: 2, overflow: TextOverflow.ellipsis),
+                      // Displaying the publication date.
+                      subtitle: Text(article.publishedAt ?? "", style: const TextStyle(fontSize: 12)),
+                      // Adding a bookmark button and a play/stop button.
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            icon: Icon(isPlaying ? Icons.stop_circle_outlined : Icons.play_circle_outline),
+                            color: Theme.of(context).primaryColor,
+                            onPressed: () => _togglePlay(article),
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              isBookmarked ? Icons.bookmark : Icons.bookmark_border,
                             ),
-                            IconButton(
-                              icon: Icon(
-                                isBookmarked ? Icons.bookmark : Icons.bookmark_border,
-                              ),
-                              onPressed: () {
-                                // Getting the bookmarked articles notifier.
-                                final bookmarkedArticlesNotifier = ref.read(bookmarkedArticlesProvider.notifier);
-                                // Adding or removing the article from bookmarks.
-                                if (isBookmarked) {
-                                  bookmarkedArticlesNotifier.removeArticle(article);
-                                } else {
-                                  bookmarkedArticlesNotifier.addArticle(article);
-                                }
-                              },
-                            ),
-                          ],
-                        ),
+                            onPressed: () {
+                              // Getting the bookmarked articles notifier.
+                              final bookmarkedArticlesNotifier = ref.read(bookmarkedArticlesProvider.notifier);
+                              // Adding or removing the article from bookmarks.
+                              if (isBookmarked) {
+                                bookmarkedArticlesNotifier.removeArticle(article);
+                              } else {
+                                bookmarkedArticlesNotifier.addArticle(article);
+                              }
+                            },
+                          ),
+                        ],
                       ),
                     ),
                   );
